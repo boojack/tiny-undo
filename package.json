@@ -11,9 +11,12 @@
   "scripts": {
     "build": "tsc"
   },
-  "author": "Steven Lee",
-  "license": "MIT",
   "devDependencies": {
     "typescript": "^4.5.2"
-  }
+  },
+  "author": "Steven Lee",
+  "license": "MIT",
+  "keywords": [
+    "undo"
+  ]
 }
