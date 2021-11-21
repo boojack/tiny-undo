@@ -30,7 +30,7 @@ export default class TinyUndo {
   private listeners: ActionCallback[] = [];
 
   /**
-   * Creates an instance of Undo.
+   * Creates an instance of TinyUndo.
    * @param element The binded textarea or input element
    * @param config The configuration object
    */
@@ -43,7 +43,12 @@ export default class TinyUndo {
 
     if (this.config.initialActions && this.config.initialActions.length > 0) {
       this.actions = this.config.initialActions;
-      this.currentIndex = this.actions.length - 1;
+
+      if (this.config.initialIndex !== undefined && this.config.initialIndex < this.actions.length) {
+        this.currentIndex = this.config.initialIndex;
+      } else {
+        this.currentIndex = this.actions.length - 1;
+      }
     } else {
       this.actions = [getInitialAction()];
       this.currentIndex = 0;
@@ -60,12 +65,7 @@ export default class TinyUndo {
       }
     }
 
-    if (this.config.initialIndex) {
-      this.currentIndex = this.config.initialIndex < this.actions.length ? this.config.initialIndex : this.actions.length - 1;
-    }
-
     this.element.value = this.actions[this.currentIndex].value;
-
     this.addEventListeners();
   }
 
@@ -74,9 +74,11 @@ export default class TinyUndo {
    */
   public runUndo() {
     const cursorPosition = this.actions[this.currentIndex].selectionStart;
+
     if (this.currentIndex > 0) {
       this.currentIndex--;
     }
+
     this.element.value = this.actions[this.currentIndex].value;
     this.element.setSelectionRange(cursorPosition, cursorPosition);
     for (const cb of this.listeners) {
@@ -91,7 +93,9 @@ export default class TinyUndo {
     if (this.currentIndex < this.actions.length - 1) {
       this.currentIndex++;
     }
+
     const cursorPosition = this.actions[this.currentIndex].selectionEnd;
+
     this.element.value = this.actions[this.currentIndex].value;
     this.element.setSelectionRange(cursorPosition, cursorPosition);
     for (const cb of this.listeners) {
@@ -155,8 +159,8 @@ export default class TinyUndo {
       type: inputEvent.inputType,
       value: this.element.value,
       timestamp: Date.now(),
-      selectionStart: (this.element.selectionEnd ?? 0) - (this.element.value.length - lastAction.value.length),
-      selectionEnd: this.element.selectionEnd ?? 0,
+      selectionStart: this.element.selectionEnd - (this.element.value.length - lastAction.value.length),
+      selectionEnd: this.element.selectionEnd,
     });
   };
 
@@ -172,6 +176,7 @@ export default class TinyUndo {
 
   private pushNewAction = (action: InputAction) => {
     const lastAction = this.actions[this.currentIndex];
+
     if (lastAction && lastAction.type === action.type && action.timestamp - lastAction.timestamp < this.config.interval) {
       lastAction.value = action.value;
       lastAction.selectionEnd = action.selectionEnd;

@@ -1,6 +1,6 @@
 {
   "name": "tiny-undo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Manage the undo/redo state programmatically for plain-text input element.",
   "files": [
     "dist/*.js",
@@ -18,5 +18,9 @@
   "license": "MIT",
   "keywords": [
     "undo"
-  ]
+  ],
+  "homepage": "https://github.com/boojack/tiny-undo",
+  "bugs": {
+    "url": "https://github.com/boojack/tiny-undo/issues"
+  }
 }
