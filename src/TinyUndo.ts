@@ -41,7 +41,7 @@ export default class TinyUndo {
       ...config,
     };
 
-    if (this.config.initialActions) {
+    if (this.config.initialActions && this.config.initialActions.length > 0) {
       this.actions = this.config.initialActions;
       this.currentIndex = this.actions.length - 1;
     } else {
@@ -118,7 +118,7 @@ export default class TinyUndo {
    * Subscribe to the input/undo/redo actions
    * @param callback The callback function
    */
-  public onAction(callback: ActionCallback) {
+  public subscribe(callback: ActionCallback) {
     this.listeners.push(callback);
   }
 
