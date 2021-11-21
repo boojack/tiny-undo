@@ -1,0 +1,19 @@
+{
+  "name": "tiny-undo",
+  "version": "0.0.1",
+  "description": "Manage the undo/redo state programmatically for plain-text input element.",
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts"
+  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Steven Lee",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  }
+}
