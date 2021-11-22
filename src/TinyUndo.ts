@@ -37,7 +37,7 @@ const getInitialAction = () => {
   return {
     type: "initialText",
     value: "",
-    timestamp: 0,
+    timestamp: Date.now(),
     selectionStart: 0,
     selectionEnd: 0,
   };
@@ -226,6 +226,7 @@ export default class TinyUndo {
         ...lastAction,
         value: action.value,
         selectionEnd: action.selectionEnd,
+        timestamp: action.timestamp,
       };
     } else {
       if (this.config.maxSize && this.currentIndex >= this.config.maxSize) {
