@@ -1,4 +1,34 @@
-import { InputAction, TinyUndoConfig } from "./types";
+/**
+ * Initalize the TinyUndo config
+ * @param initialValue: The initial value of the editor
+ * @param interval: The interval in milliseconds to merge actions
+ * @param maxSize: The maximum number of actions to keep
+ * @param initialActions: The initial actions to add to the editor
+ * @param initialIndex: The initial index of the initial actions
+ */
+export interface TinyUndoConfig {
+  initialValue: string;
+  interval: number;
+  maxSize?: number;
+  initialActions?: InputAction[];
+  initialIndex?: number;
+}
+
+/**
+ * Record of an input action
+ * @param type: The type of action: insertText...(refer: https://rawgit.com/w3c/input-events/v1/index.html#interface-InputEvent-Attributes)
+ * @param value: The value of inputer element
+ * @param timestamp: The timestamp of the action and can be used to the uuid
+ * @param selectionStart: The cursor position before the action started
+ * @param selectionEnd: The cursor position after the action ended
+ */
+export interface InputAction {
+  type: string;
+  value: string;
+  timestamp: number;
+  selectionStart: number;
+  selectionEnd: number;
+}
 
 type ActionCallback = (actions: InputAction[], currentIndex: number) => void;
 
@@ -81,9 +111,7 @@ export default class TinyUndo {
 
     this.element.value = this.actions[this.currentIndex].value;
     this.element.setSelectionRange(cursorPosition, cursorPosition);
-    for (const cb of this.listeners) {
-      cb(this.actions, this.currentIndex);
-    }
+    this.dispatchChange();
   }
 
   /**
@@ -98,9 +126,7 @@ export default class TinyUndo {
 
     this.element.value = this.actions[this.currentIndex].value;
     this.element.setSelectionRange(cursorPosition, cursorPosition);
-    for (const cb of this.listeners) {
-      cb(this.actions, this.currentIndex);
-    }
+    this.dispatchChange();
   }
 
   /**
@@ -190,6 +216,10 @@ export default class TinyUndo {
       this.actions[this.currentIndex] = action;
       this.actions = this.actions.slice(0, this.currentIndex + 1);
     }
+    this.dispatchChange();
+  };
+
+  private dispatchChange = () => {
     for (const cb of this.listeners) {
       cb(this.actions, this.currentIndex);
     }
