@@ -102,7 +102,7 @@ export default class TinyUndo {
   /**
    * Run undo programmatically
    */
-  public runUndo() {
+  public runUndo = () => {
     const cursorPosition = this.actions[this.currentIndex].selectionStart;
 
     if (this.currentIndex > 0) {
@@ -112,12 +112,12 @@ export default class TinyUndo {
     this.element.value = this.actions[this.currentIndex].value;
     this.element.setSelectionRange(cursorPosition, cursorPosition);
     this.dispatchChange();
-  }
+  };
 
   /**
    * Run redo programmatically
    */
-  public runRedo() {
+  public runRedo = () => {
     if (this.currentIndex < this.actions.length - 1) {
       this.currentIndex++;
     }
@@ -127,30 +127,39 @@ export default class TinyUndo {
     this.element.value = this.actions[this.currentIndex].value;
     this.element.setSelectionRange(cursorPosition, cursorPosition);
     this.dispatchChange();
-  }
+  };
 
   /**
    * Get the actions
    * @returns The input action data array
    */
-  public getActions() {
+  public getActions = () => {
     return this.actions;
-  }
+  };
+
+  /**
+   * Reset state
+   */
+  public resetState = () => {
+    this.actions = [getInitialAction()];
+    this.currentIndex = 0;
+    this.dispatchChange();
+  };
 
   /**
    * Destory all event listeners: Keydown and Input
    */
-  public destroy() {
+  public destroy = () => {
     this.rmEventListeners();
-  }
+  };
 
   /**
    * Subscribe to the input/undo/redo actions
    * @param callback The callback function
    */
-  public subscribe(callback: ActionCallback) {
+  public subscribe = (callback: ActionCallback) => {
     this.listeners.push(callback);
-  }
+  };
 
   /**
    * Handle the keydown event
@@ -190,15 +199,15 @@ export default class TinyUndo {
     });
   };
 
-  private addEventListeners() {
+  private addEventListeners = () => {
     this.element.addEventListener("keydown", this.handleElementKeydown);
     this.element.addEventListener("input", this.handleElementInput);
-  }
+  };
 
-  private rmEventListeners() {
+  private rmEventListeners = () => {
     this.element.removeEventListener("keydown", this.handleElementKeydown);
     this.element.removeEventListener("input", this.handleElementInput);
-  }
+  };
 
   private pushNewAction = (action: InputAction) => {
     const lastAction = this.actions[this.currentIndex];
