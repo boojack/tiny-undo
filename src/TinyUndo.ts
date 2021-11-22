@@ -138,6 +138,15 @@ export default class TinyUndo {
   };
 
   /**
+   * set state
+   */
+  public setState = (actions: InputAction[], index: number) => {
+    this.actions = [...actions];
+    this.currentIndex = index < this.actions.length ? index : this.actions.length - 1;
+    this.dispatchChange();
+  };
+
+  /**
    * Reset state
    */
   public resetState = () => {
@@ -213,8 +222,11 @@ export default class TinyUndo {
     const lastAction = this.actions[this.currentIndex];
 
     if (lastAction && lastAction.type === action.type && action.timestamp - lastAction.timestamp < this.config.interval) {
-      lastAction.value = action.value;
-      lastAction.selectionEnd = action.selectionEnd;
+      this.actions[this.currentIndex] = {
+        ...lastAction,
+        value: action.value,
+        selectionEnd: action.selectionEnd,
+      };
     } else {
       if (this.config.maxSize && this.currentIndex >= this.config.maxSize) {
         this.actions.shift();
@@ -230,7 +242,7 @@ export default class TinyUndo {
 
   private dispatchChange = () => {
     for (const cb of this.listeners) {
-      cb(this.actions, this.currentIndex);
+      cb([...this.actions], this.currentIndex);
     }
   };
 }
