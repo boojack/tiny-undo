@@ -1,6 +1,6 @@
 {
   "name": "tiny-undo",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Manage the undo/redo state programmatically for plain-text input element.",
   "files": [
     "dist/*.js",

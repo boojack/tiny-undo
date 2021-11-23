@@ -10,10 +10,10 @@ Manage the undo/redo state programmatically for plain-text input element.
 
 ## How to use it?
 
-1. Install package: `npm install tiny-undo` or `yarn add tiny-undo`
-2. A simple example:
+1. Install package: `yarn add tiny-undo` or `npm install tiny-undo`
+2. A simple example in pure html&javascript:
 
-   ```typescript
+   ```javascript
    // 1. Get a textarea element instance
    const textareaEl = document.querySelector("textarea");
    // 2. Create a TinyUndo instance with the element
@@ -37,20 +37,46 @@ Manage the undo/redo state programmatically for plain-text input element.
    // ...
    ```
 
+4. (Optional) With initial configuration:
+
+   ```typescript
+   /**
+    * Initalize the TinyUndo config
+    * @param initialValue: The initial value of the editor
+    * @param interval: The interval in milliseconds to merge actions
+    * @param maxSize: The maximum number of actions to keep
+    * @param initialActions: The initial actions to add to the editor
+    * @param initialIndex: The initial index of the initial actions
+    */
+   export interface TinyUndoConfig {
+     initialValue: string;
+     interval: number;
+     maxSize?: number;
+     initialActions?: InputAction[];
+     initialIndex?: number;
+   }
+
+   const config: TinyUndoConfig = {
+     initialValue: "",
+     interval: 500,
+   };
+   const tinyUndo = new TinyUndo(textareaEl, config);
+   // ...
+   ```
+
 ## More Advanced Examples
 
-- **Historical undo/redo with storage in React**
+- **Historical undo/redo editor in React**
 
   Please imagine that you can undo/redo with the historical data **even if the browser has refreshed or restarted**, and just need to save the tinyUndo data in the localstorage that can be done.
 
-  [👀 Preview](https://memos.justsven.top) / [⌨️ Source code](https://github.com/boojack/insmemo-web/commit/82d6a8bb880fd9f0e333c871f8c63ac6b19eff7b)
+  **[👀 Preview](https://memos.justsven.top)** / [⌨️ Source code](https://github.com/boojack/insmemo-web/commit/82d6a8bb880fd9f0e333c871f8c63ac6b19eff7b)
 
 - **An undo/redo state visualization editor in Vue**
-  ![screenshot](https://cdn.jellow.site/Fj4OSuNf62-cBX0clJGYx4-_imnxv2.png)
 
-  [👀 Preview](https://boojack.github.io/tiny-undo-editor/) / [⌨️ Source code](https://github.com/boojack/tiny-undo-editor)
+  Just a simple example in vue to show how tiny-undo works.
 
----
+  **[👀 Preview](https://boojack.github.io/tiny-undo-editor/)** / [⌨️ Source code](https://github.com/boojack/tiny-undo-editor)
 
 ## References
 
