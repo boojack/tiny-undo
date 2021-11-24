@@ -30,6 +30,10 @@ Manage the undo/redo state programmatically for plain-text input element.
    useEffect(() => {
      const tinyUndo = new TinyUndo(editorRef.current!);
 
+     tinyUndo.subscribe((actions, index) => {
+       // do anything you want right here
+     });
+
      return () => {
        tinyUndo.destroy();
      };
@@ -66,15 +70,15 @@ Manage the undo/redo state programmatically for plain-text input element.
 
 ## More Advanced Examples
 
-- **Historical undo/redo editor in React**
+- **An undo/redo editor with persistent history in React**
 
   Please imagine that you can undo/redo with the historical data **even if the browser has refreshed or restarted**, and just need to save the tinyUndo data in the localstorage that can be done.
 
   **[👀 Preview](https://memos.justsven.top)** / [⌨️ Source code](https://github.com/boojack/insmemo-web/commit/82d6a8bb880fd9f0e333c871f8c63ac6b19eff7b)
 
-- **An undo/redo state visualization editor in Vue**
+- **An undo/redo state visual editor in Vue**
 
-  Just a simple example in vue to show how tiny-undo works.
+  Just a simple example which made with Vue.js to show how tiny-undo works.
 
   **[👀 Preview](https://boojack.github.io/tiny-undo-editor/)** / [⌨️ Source code](https://github.com/boojack/tiny-undo-editor)
 
